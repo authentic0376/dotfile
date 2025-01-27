@@ -4,6 +4,7 @@ set tabstop=4
 set shiftwidth=4
 set autoindent
 set mouse=a
+set cursorcolumn
 colorscheme slate
 
 call plug#begin('~/.vim/plugged')
@@ -24,10 +25,13 @@ let mapleader = " "
 " EasyMotion 단축키 설정 (예: `<leader><leader>w`로 단어 이동)
 nmap <leader>w <Plug>(easymotion-bd-w)
 nmap s <Plug>(easymotion-s)
+
 nnoremap <leader>vv :e ~\.vimrc<CR>
 nnoremap <leader>vr :w<CR>:source $MYVIMRC<CR>
 
-
+nnoremap <C-v> "+p
+vnoremap <C-v> "+p
+vnoremap <C-c> "+y
 
 " Tab으로 자동완성 목록 탐색
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
