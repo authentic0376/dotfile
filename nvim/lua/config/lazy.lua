@@ -20,6 +20,7 @@ vim.opt.rtp:prepend(lazypath)
 -- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+vim.o.wrap = false  -- nowrap 설정
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -32,4 +33,7 @@ require("lazy").setup({
   install = { colorscheme = { "habamax" } },
   -- automatically check for plugin updates
   checker = { enabled = true },
+
 })
+
+require("config.keymap")
