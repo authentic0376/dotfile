@@ -9,6 +9,8 @@ vim.api.nvim_set_keymap('n', '<leader>vv', ':NERDTree ~/AppData/Local/nvim<CR>',
 vim.api.nvim_set_keymap('n', '<leader>ba', ':%bd|e#<CR>', { noremap = true, silent = true })
 -- -- delete unchaged
 vim.api.nvim_set_keymap('n', '<leader>bu', ':bufdo if !&modified | bd | endif<CR>', { noremap = true, silent = true })
-
+-- -- switch to prev, next buffer
+vim.api.nvim_set_keymap('n', '<S-Tab>', ':bp<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Tab>', ':bn<CR>', { noremap = true, silent = true })
 
 
