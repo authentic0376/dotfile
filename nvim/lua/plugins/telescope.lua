@@ -7,6 +7,7 @@ return {
 
         vim.keymap.set('n', '<leader>tf', builtin.find_files, { desc = 'Telescope find files' })
         vim.keymap.set('n', '<leader>tg', builtin.live_grep, { desc = 'Telescope live grep' })
+        vim.keymap.set('n', '<leader>tb', builtin.buffers, { desc = 'Telescope buffers' })
         
         -- 디렉토리 검색
         vim.api.nvim_set_keymap('n', '<leader>td', '', {
