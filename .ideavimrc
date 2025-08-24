@@ -24,6 +24,7 @@ Plug 'easymotion/vim-easymotion'
 nmap s <Plug>(easymotion-s)
 nmap <leader>w <Plug>(easymotion-bd-w)
 
+Plug 'vim-matchit'
 " ----------------------
 
 
