@@ -1,4 +1,3 @@
-cp ~/.vimrc .
-
+# bring nvim config from this machine 
 rm -rf ./nvim
-cp -r ~/AppData/Local/nvim ./nvim
+cp -r ~/.config/nvim ./nvim
