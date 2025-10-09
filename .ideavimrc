@@ -20,6 +20,7 @@ Plug 'tpope/vim-surround'
 Plug 'machakann/vim-highlightedyank'
 Plug 'tpope/vim-commentary'
 
+" You need to install IdeaVim-EasyMotion plugin and AceJump in the Jetbrains market
 Plug 'easymotion/vim-easymotion'
 nmap s <Plug>(easymotion-s)
 nmap <leader>w <Plug>(easymotion-bd-w)
