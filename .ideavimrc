@@ -64,11 +64,11 @@ nnoremap <leader>c \"_c
 nnoremap <leader>d \"_d
 
 " 시스템 레지스터 맵핑
-nnoremap <leader>yy \"+yy
-xnoremap <leader>y \"+y
-nnoremap <leader>yiw \"+yiw
-nnoremap <leader>p \"+p
-xnoremap <leader>p \"+p
+nnoremap \\yy \"+yy
+xnoremap \\y \"+y
+nnoremap \\yiw \"+yiw
+nnoremap \\p \"+p
+xnoremap \\p \"+p
 
 " 줄 잇기
 nnoremap <leader>j <S-j>
