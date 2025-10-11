@@ -216,7 +216,11 @@ return {
         { desc = "Jump anywhere" }
       )
 
+      -- 검색기
       require("mini.pick").setup()
+      vim.keymap.set("n", "<M-5>f", "<Cmd>Pick files<CR>", { desc = "Pick files" })
+      vim.keymap.set("n", "<M-5>b", "<Cmd>Pick buffers<CR>", { desc = "Pick buffers" })
+      vim.keymap.set("n", "<M-5>g", "<Cmd>Pick grep<CR>", { desc = "Pick grep" })
 
       ----------------------------------
       -- appearance
