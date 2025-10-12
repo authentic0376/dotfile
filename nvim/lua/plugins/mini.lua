@@ -4,6 +4,7 @@ return {
     version = false,
     dependencies = { "rafamadriz/friendly-snippets" },
     config = function()
+      vim.cmd.colorscheme("mytheme")
       ----------------------------------
       -- text editing
       ----------------------------------
@@ -73,9 +74,10 @@ return {
       -- * **검색 및 편집**:
       --     * 검색 시 대소문자를 무시하되(`ignorecase`), 대문자가 포함되면 구분합니다(`smartcase`).
       --     * 검색어를 입력하는 동안 일치하는 항목을 바로 보여줍니다(`incsearch`).
+      --     * go/gO 로 줄 삽입
       --
       -- * **이동**: `j`와 `k`를 눌렀을 때 실제 줄이 아닌 화면에 보이는 줄 단위로 커서가 이동합니다.
-      -- * **저장**: 일반 모드, 비주얼 모드, 입력 모드에서 `<C-s>` (Ctrl+S) 키로 파일을 저장할 수 있습니다.
+      -- * **저장**+S) 키로 파일을 저장할 수 있습니다.
       -- * **복사/붙여넣기**: `gy`로 시스템 클립보드에 복사하고, `gp`로 붙여넣을 수 있습니다.
       -- * **옵션 토글**: `\` 키를 조합하여 특정 옵션을 켜고 끌 수 있습니다.
       --     * `\n`: 줄 번호 (`number`) 토글
@@ -94,7 +96,12 @@ return {
       -- * 추가적인 UI 기능 (`extra_ui`)
       -- * `<C-h/j/k/l>`을 이용한 창 간 이동 (`windows`)
       -- * `<M-h/j/k/l>` (Alt+hjkl)을 이용한 커서 이동 (`move_with_alt`)
-      require("mini.basics").setup()
+      require("mini.basics").setup({
+        mappings = {
+          -- Window navigation with <C-hjkl>, resize with <C-arrow>
+          windows = true,
+        },
+      })
 
       -- [,] 으로 왔다갔다, 대문자는 끝으로
       -- b 버퍼, c 주석, f 파일, i 들여쓰기, t treesitter
@@ -178,10 +185,56 @@ return {
 
       require("mini.extra").setup()
 
-      -- j/k, l,h,q,g?,<bs>,m<char>,'<char>, =
-      -- 텍스트파일 수정 방식으로 파일폴더 수정
+      -- | Action      | Keys | Description                                    |
+      -- |-------------|------|------------------------------------------------|
+      -- | Close       |  q   | Close explorer                                 |
+      -- |-------------|------|------------------------------------------------|
+      -- | Go in       |  l   | Expand entry (show directory or open file)     |
+      -- |-------------|------|------------------------------------------------|
+      -- | Go in plus  |  L   | Expand entry plus extra action                 |
+      -- |-------------|------|------------------------------------------------|
+      -- | Go out      |  h   | Focus on parent directory                      |
+      -- |-------------|------|------------------------------------------------|
+      -- | Go out plus |  H   | Focus on parent directory plus extra action    |
+      -- |-------------|------|------------------------------------------------|
+      -- | Go to mark  |  '   | Jump to bookmark (waits for single key id)     |
+      -- |-------------|------|------------------------------------------------|
+      -- | Set mark    |  m   | Set bookmark (waits for single key id)         |
+      -- |-------------|------|------------------------------------------------|
+      -- | Reset       | <BS> | Reset current explorer                         |
+      -- |-------------|------|------------------------------------------------|
+      -- | Reveal cwd  |  @   | Reset current current working directory        |
+      -- |-------------|------|------------------------------------------------|
+      -- | Show help   |  g?  | Show help window                               |
+      -- |-------------|------|------------------------------------------------|
+      -- | Synchronize |  =   | Synchronize user edits and/or external changes |
+      -- |-------------|------|------------------------------------------------|
+      -- | Trim left   |  <   | Trim left part of branch                       |
+      -- |-------------|------|------------------------------------------------|
+      -- | Trim right  |  >   | Trim right part of branch                      |
+      -- |-------------|------|------------------------------------------------|
       require("mini.files").setup()
-      vim.keymap.set("n", "<M-4>", "<Cmd>lua MiniFiles.open()<CR>", { desc = "Explorer: Open mini.files" })
+      vim.keymap.set("n", "<M-1>1", "<Cmd>lua MiniFiles.open()<CR>", { desc = "Open mini.files" })
+      vim.keymap.set(
+        "n",
+        "<M-1>f",
+        "<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>",
+        { desc = "mini.files focus" }
+      )
+      vim.keymap.set(
+        "n",
+        "<M-1>n",
+        "<Cmd>lua MiniFiles.open('~/.config/nvim/lua/plugins')<CR>",
+        { desc = "mini.files nvim plugins" }
+      )
+      vim.keymap.set("n", "<M-1>d", "<Cmd>lua MiniFiles.open('~/Downloads')<CR>", { desc = "mini.files ~/Downloads" })
+      vim.keymap.set("n", "<M-1>w", "<Cmd>lua MiniFiles.open('~/workspace')<CR>", { desc = "mini.files ~/workspace" })
+      vim.keymap.set(
+        "n",
+        "<M-1>s",
+        "<Cmd>lua MiniFiles.open('~/.local/state/nvim/swap')<CR>",
+        { desc = "mini.files swap/" }
+      )
 
       -- 상태표시줄에 브랜치등 깃정보 표시
       -- 명령줄에서 :Git 으로 깃명령어 실행
