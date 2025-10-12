@@ -100,6 +100,7 @@ return {
         mappings = {
           -- Window navigation with <C-hjkl>, resize with <C-arrow>
           windows = true,
+          move_with_alt = true,
         },
       })
 
@@ -271,9 +272,9 @@ return {
 
       -- 검색기
       require("mini.pick").setup()
-      vim.keymap.set("n", "<M-5>f", "<Cmd>Pick files<CR>", { desc = "Pick files" })
-      vim.keymap.set("n", "<M-5>b", "<Cmd>Pick buffers<CR>", { desc = "Pick buffers" })
-      vim.keymap.set("n", "<M-5>g", "<Cmd>Pick grep<CR>", { desc = "Pick grep" })
+      vim.keymap.set("n", "<M-2>f", "<Cmd>Pick files<CR>", { desc = "Pick files" })
+      vim.keymap.set("n", "<M-2>b", "<Cmd>Pick buffers<CR>", { desc = "Pick buffers" })
+      vim.keymap.set("n", "<M-2>g", "<Cmd>Pick grep<CR>", { desc = "Pick grep" })
 
       ----------------------------------
       -- appearance
