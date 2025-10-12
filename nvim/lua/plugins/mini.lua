@@ -225,6 +225,9 @@ return {
           miniclue.gen_clues.registers(),
           miniclue.gen_clues.windows(),
           miniclue.gen_clues.z(),
+
+          -- LSP 키맵 그룹 힌트 추가
+          { mode = "n", keys = "<leader>c", desc = "+Code" },
         },
       })
       --
@@ -403,6 +406,7 @@ return {
       ----------------------------------
       -- ### pick 검색기
       --
+      -- Tab 미리보기, S-Tab 속성보기
       require("mini.pick").setup()
       vim.keymap.set("n", "<M-2>f", "<Cmd>Pick files<CR>", { desc = "Pick files" })
       vim.keymap.set("n", "<M-2>b", "<Cmd>Pick buffers<CR>", { desc = "Pick buffers" })
