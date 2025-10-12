@@ -4,26 +4,68 @@ return {
     version = false,
     dependencies = { "rafamadriz/friendly-snippets" },
     config = function()
+      -- 컬러스킴 설정
       vim.cmd.colorscheme("mytheme")
+
       ----------------------------------
-      -- text editing
+      -- # mini.nvim 플러그인 설정
       ----------------------------------
 
-      -- # text-obj 확장
+      ----------------------------------
+      -- ## text editing
+      ----------------------------------
+
+      ----------------------------------
+      -- ### ai text-object 확장
       --
-      -- ## 기본단축키
-      -- f 함수, a 함수인자, t html태그, b 괄호, q 따옴표
-      -- <space>, ., ? 직접입력(va?[<CR>]<CR> = va[)
-      -- g[b 괄호 안에서 쓰면, 왼쪽 괄호로 이동. 안쪽에서 쓰자.
-      --  - 괄호 밖에서 쓰면 오른쪽으로 탐색해서 왼쪽괄호 선택.
-      --  - (를 쓰든 )를 쓰든 무의미하다. [,]가 결정한다
-      -- 접 n 다음, l 이전(vanb = 현재커서 위치 다음의 괄호안 객체 선택)
-      --
+      -- ┌───┬───────────────┐
+      -- │Key│     Name      │
+      -- ├───┴───────────────┤
+      -- ├┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┤
+      -- │ ( │  Balanced ()  │
+      -- │ [ │  Balanced []  │
+      -- │ { │  Balanced {}  │
+      -- │ < │  Balanced <>  │
+      -- ├┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┤
+      -- │ ) │  Balanced ()  │
+      -- │ ] │  Balanced []  │
+      -- │ } │  Balanced {}  │
+      -- │ > │  Balanced <>  │
+      -- │ b │  Alias for    │
+      -- │   │  ), ], or }   │
+      -- ├┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┤
+      -- │ " │  Balanced "   │
+      -- │ ' │  Balanced '   │
+      -- │ ` │  Balanced `   │
+      -- │ q │  Alias for    │
+      -- │   │  ", ', or `   │
+      -- ├┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┤
+      -- │ ? │  User prompt  │
+      -- │   │(typed e and o)│
+      -- ├┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┤
+      -- │ t │      Tag      │
+      -- ├┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┤
+      -- │ f │ Function call │
+      -- ├┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┤
+      -- │ a │   Argument    │
+      -- ├┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┤
+      -- │   │    Default    │
+      -- │   │   (typed _)   │
+      -- └───┴───────────────┘
+      -- ?: 직접입력하는 obj. ? 시작문자<CR> 끝문자 <CR>
+      -- g[ <obj> 다음 obj의 왼쪽 경계로 가기
+      -- g] <obj> 다음 obj의 오른쪽 경계로 가기
+      -- obj 변형접미사: n 다음, l 이전 (vanb = 다음 bracket 객체의 around 선택)
+
       -- ## 기능
       -- 커스텀 text-obj 생성 가능
       require("mini.ai").setup()
+      --
+      -- ### ai end
+      ----------------------------------
 
-      -- gcc 로 줄 코멘팅, gc + text
+      -- gcc 로 줄 코멘팅, gc + text obj
+      -- gc 라는 obj 생성
       require("mini.comment").setup()
 
       -- 자동완성
@@ -42,6 +84,9 @@ return {
       -- 괄호, 따옴표 입력시 쌍으로 입력
       require("mini.pairs").setup()
 
+      ----------------------------------
+      -- ### snippets
+      --
       -- <C-j> <C-l> <C-h> <C-c>
       local gen_loader = require("mini.snippets").gen_loader
       require("mini.snippets").setup({
@@ -54,6 +99,9 @@ return {
       })
       -- 스니펫 LSP 서버를 시작하여 자동완성에 스니펫이 표시되도록 합니다.
       require("mini.snippets").start_lsp_server()
+      --
+      -- ### snippets end
+      ----------------------------------
 
       -- gS 로 열었다 닫었다
       require("mini.splitjoin").setup()
@@ -62,8 +110,12 @@ return {
       require("mini.surround").setup()
 
       ----------------------------------
-      -- general workflow
+      -- ## general workflow
       ----------------------------------
+
+      ----------------------------------
+      -- ### basics
+      --
       -- * **리더(Leader) 키**: `<Space>` 키가 리더 키로 설정됩니다.
       -- * **파일 타입**: 파일 종류에 맞는 플러그인과 들여쓰기가 활성화됩니다 (`:filetype plugin indent on`).
       -- * **백업 및 복구**: 변경 사항을 되돌릴 수 있도록 언두 파일(`undofile`)이 활성화됩니다.
@@ -103,15 +155,21 @@ return {
           move_with_alt = true,
         },
       })
+      --
+      -- basics end
+      ----------------------------------
 
       -- [,] 으로 왔다갔다, 대문자는 끝으로
       -- b 버퍼, c 주석, f 파일, i 들여쓰기, t treesitter
-      -- x,d,j,l,o,q,u,w,y
+      -- x,d,jump,l,o,q,u,w,y
       require("mini.bracketed").setup()
 
       -- 버퍼 닫으면 다음 어떤 버퍼가 보여질지 결정해준다
       require("mini.bufremove").setup()
 
+      ----------------------------------
+      -- ### clue 단축키 힌트 팝업
+      --
       -- 밑에 설정에서 miniclue 라는 변수를 여러곳에서 쓰기 때문에 선언해줘야 한다.
       local miniclue = require("mini.clue")
       require("mini.clue").setup({
@@ -157,7 +215,13 @@ return {
           miniclue.gen_clues.z(),
         },
       })
+      --
+      -- clue end
+      ----------------------------------
 
+      ----------------------------------
+      -- ### diff
+      --
       -- 실수인 수정을 막고, 되돌리는 용도가 가장 크다. 깃은 활용할 뿐 깃툴이라 생각말자
       -- gh 라는 git 변경점을 나타내는 text-obj 추가
       -- gh 는 text-obj 이기도 하지만, action이기도 하다
@@ -183,9 +247,16 @@ return {
       vim.keymap.set("n", "<M-3>", function()
         require("mini.diff").toggle_overlay()
       end, { desc = "[D]iff [O]verlay Toggle" })
+      --
+      -- diff end
+      ----------------------------------
 
+      -- mini 플러그인들에 추가기능을 준다
       require("mini.extra").setup()
 
+      ----------------------------------
+      -- ### files
+      --
       -- | Action      | Keys | Description                                    |
       -- |-------------|------|------------------------------------------------|
       -- | Close       |  q   | Close explorer                                 |
@@ -215,6 +286,39 @@ return {
       -- | Trim right  |  >   | Trim right part of branch                      |
       -- |-------------|------|------------------------------------------------|
       require("mini.files").setup()
+      -- Set focused directory as current working directory
+      local set_cwd = function()
+        local path = (MiniFiles.get_fs_entry() or {}).path
+        if path == nil then
+          return vim.notify("Cursor is not on valid entry")
+        end
+        vim.fn.chdir(vim.fs.dirname(path))
+      end
+
+      -- Yank in register full path of entry under cursor
+      local yank_path = function()
+        local path = (MiniFiles.get_fs_entry() or {}).path
+        if path == nil then
+          return vim.notify("Cursor is not on valid entry")
+        end
+        vim.fn.setreg(vim.v.register, path)
+      end
+
+      -- Open path with system default handler (useful for non-text files)
+      local ui_open = function()
+        vim.ui.open(MiniFiles.get_fs_entry().path)
+      end
+
+      vim.api.nvim_create_autocmd("User", {
+        -- MiniFilesBufferCreate 가 단축키가 mini.files 안에서만 작동하도록 해준다
+        pattern = "MiniFilesBufferCreate",
+        callback = function(args)
+          local b = args.data.buf_id
+          vim.keymap.set("n", "g~", set_cwd, { buffer = b, desc = "Set cwd" })
+          vim.keymap.set("n", "gX", ui_open, { buffer = b, desc = "OS open" })
+          vim.keymap.set("n", "gy", yank_path, { buffer = b, desc = "Yank path" })
+        end,
+      })
       vim.keymap.set("n", "<M-1>1", "<Cmd>lua MiniFiles.open()<CR>", { desc = "Open mini.files" })
       vim.keymap.set(
         "n",
@@ -236,7 +340,13 @@ return {
         "<Cmd>lua MiniFiles.open('~/.local/state/nvim/swap')<CR>",
         { desc = "mini.files swap/" }
       )
+      --
+      -- ### files end
+      ----------------------------------
 
+      ----------------------------------
+      -- ### git
+      --
       -- 상태표시줄에 브랜치등 깃정보 표시
       -- 명령줄에서 :Git 으로 깃명령어 실행
       -- 명령어 결과창은 :q로 끄면 된다
@@ -247,11 +357,16 @@ return {
         "<Cmd>lua MiniGit.show_at_cursor()<CR>",
         { desc = "Show git history at cursor" }
       )
+      --
+      -- ### git end
+      ----------------------------------
 
       -- fFtT를 여러줄로 확장
       require("mini.jump").setup()
 
-      -- 점프 힌트
+      ----------------------------------
+      -- ### jump2d 점프 힌트
+      --
       require("mini.jump2d").setup({
         -- 라벨에 대문자를 추가해 두 글자 라벨이 나올 확률을 줄임
         labels = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -269,15 +384,23 @@ return {
         "<Cmd>lua MiniJump2d.start(MiniJump2d.builtin_opts.single_character)<CR>",
         { desc = "Jump anywhere" }
       )
+      --
+      -- ### jump2d end
+      ----------------------------------
 
-      -- 검색기
+      ----------------------------------
+      -- ### pick 검색기
+      --
       require("mini.pick").setup()
       vim.keymap.set("n", "<M-2>f", "<Cmd>Pick files<CR>", { desc = "Pick files" })
       vim.keymap.set("n", "<M-2>b", "<Cmd>Pick buffers<CR>", { desc = "Pick buffers" })
       vim.keymap.set("n", "<M-2>g", "<Cmd>Pick grep<CR>", { desc = "Pick grep" })
+      --
+      -- ### pick end
+      ----------------------------------
 
       ----------------------------------
-      -- appearance
+      -- ## appearance
       ----------------------------------
 
       -- 부드러운 스크롤을 위해 필요.
