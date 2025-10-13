@@ -80,12 +80,22 @@ return {
       -- gc 라는 obj 생성
       require("mini.comment").setup()
 
+      ----------------------------------
+      -- ### completion
+      --
       -- 자동완성
-      -- <C-space> <A-space> 강제실행
-      -- <C-f>/<C-b> 스크롤
-      -- <C-y> <C-e> 스니펫
-      -- <C-n> <C-p>
+      -- <C-n> <C-p> 드롭다운 한칸씩 이동
+      -- esc 나 아무 문자가 곧 선택이다. 효율적인 방식임
+      --
+      -- <C-space> LSP+fallback 자동완성 강제 실행
+      -- <A-space> Fallback 자동완성 강제실행
+      -- <C-f>/<C-b> 설명창 스크롤
+      -- <C-y> 스니펫확장, 아무키 누르는 것도 똑같음
+      -- <C-e> 스니펫말고 텍스트 자동완성
       require("mini.completion").setup()
+      --
+      -- ### completion end
+      ----------------------------------
 
       -- 복잡한 키맵, 조건부 키맵. 같은 키인데 상황에 따라 다르게 작동
       require("mini.keymap").setup()
@@ -99,13 +109,22 @@ return {
       ----------------------------------
       -- ### snippets
       --
-      -- <C-j> <C-l> <C-h> <C-c>
+      -- <C-j> 스니펫 확장
+      -- snippets 플러그인은 completion과 달리 먼저 선택하는 게 아니라
+      -- 스니펫 문자(예를 들면, ! = html 스니펫)를 입력한 뒤
+      -- 스니펫확장키를 누르면 스니펫이 작성된다 이걸 확장이라고 부른다
+      -- 만약 그 문자에 해당하는 스니펫이 여러개면 snippets 전용 선택창이 나온다
+      -- completion 과 순서가 반대인 것이다
+      --
+      -- <C-l> <C-h> 점프 포인트 이동
+      -- <C-c> 스니펫 중단
       local gen_loader = require("mini.snippets").gen_loader
       require("mini.snippets").setup({
         -- 스니펫 로더 설정
         snippets = {
           -- 'runtimepath'에서 현재 언어에 맞는 스니펫 파일을 로드합니다.
           -- friendly-snippets가 이 경로에 파일을 설치하므로 자동으로 인식됩니다.
+          -- friendly-snippets 은 상단에 mini.nvim 디펜던시에 있다
           gen_loader.from_lang(),
         },
       })
