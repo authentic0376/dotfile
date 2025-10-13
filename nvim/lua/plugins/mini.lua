@@ -4,9 +4,6 @@ return {
     version = false,
     dependencies = { "rafamadriz/friendly-snippets" },
     config = function()
-      -- 컬러스킴 설정
-      vim.cmd.colorscheme("mytheme")
-
       ----------------------------------
       -- # mini.nvim 플러그인 설정
       ----------------------------------
