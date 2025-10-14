@@ -283,6 +283,7 @@ return {
       ----------------------------------
 
       -- mini 플러그인들에 추가기능을 준다
+      -- :Pick {explorer, git_commits, git_hunks, diagnostic, ..등등 } 각종 picker 추가
       require("mini.extra").setup()
 
       ----------------------------------
@@ -423,7 +424,58 @@ return {
       -- ### pick 검색기
       --
       -- Tab 미리보기, S-Tab 속성보기
-      require("mini.pick").setup()
+      -- <C-x> 선택 토글, <C-a> 전체 선택 토글
+      -- <C-Space> 검색결과 고정, 재검색
+      require("mini.pick").setup({
+        -- 기존에 사용하시던 mini.pick 설정들...
+        mappings = {
+          -- 기존 매핑들...
+
+          -- 여기에 auto-session을 위한 커스텀 액션을 추가합니다.
+          -- auto-session의 기본 키인 <C-d>를 사용해 보겠습니다.
+          delete_session = {
+            char = "<C-d>",
+            func = function()
+              -- 현재 활성화된 피커의 상태를 가져옵니다.
+              local picker_state = require("mini.pick").get_picker_state()
+              if not picker_state then
+                return
+              end
+
+              -- 피커의 이름이 'AutoSession'일 때만 동작하도록 제한합니다.
+              -- (다른 mini.pick 사용 시 오작동 방지)
+              local picker_opts = require("mini.pick").get_picker_opts()
+              if not picker_opts or not picker_opts.source or picker_opts.source.name ~= "session_lens" then
+                print(string.format("picker name: %s", picker_opts.source))
+                return
+              end
+
+              -- 현재 선택된 항목(세션 이름)을 가져옵니다.
+              local matches = require("mini.pick").get_picker_matches()
+              if not matches or not matches.current then
+                print("No item selected.")
+                return
+              end
+              local session_to_delete = matches.current
+
+              -- `vim.ui.input`을 사용해 사용자에게 삭제 여부를 한 번 더 확인합니다.
+              vim.ui.input({ prompt = "Delete session '" .. session_to_delete .. "'? [y/N] " }, function(input)
+                if input and string.lower(input) == "y" then
+                  -- AutoSession delete 명령 실행
+                  vim.cmd("AutoSession delete " .. vim.fn.fnameescape(session_to_delete))
+
+                  -- 피커를 새로고침하여 삭제된 항목을 반영합니다.
+                  require("mini.pick").refresh()
+
+                  vim.notify("Session '" .. session_to_delete .. "' deleted.", vim.log.levels.INFO)
+                else
+                  vim.notify("Deletion cancelled.", vim.log.levels.WARN)
+                end
+              end)
+            end,
+          },
+        },
+      })
       vim.keymap.set("n", "<M-2>f", "<Cmd>Pick files<CR>", { desc = "Pick files" })
       vim.keymap.set("n", "<M-2>b", "<Cmd>Pick buffers<CR>", { desc = "Pick buffers" })
       vim.keymap.set("n", "<M-2>g", "<Cmd>Pick grep<CR>", { desc = "Pick grep" })
@@ -460,9 +512,6 @@ return {
 
       -- 오른쪽 상단에 알림창
       require("mini.notify").setup()
-
-      -- 상태표시줄
-      require("mini.statusline").setup()
     end,
   },
 }
