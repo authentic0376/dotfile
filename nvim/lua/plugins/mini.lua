@@ -186,9 +186,25 @@ return {
       ----------------------------------
 
       -- [,] 으로 왔다갔다, 대문자는 끝으로
-      -- b 버퍼, c 주석, f 파일, i 들여쓰기, t treesitter
-      -- x,d,jump,l,o,q,u,w,y
-      require("mini.bracketed").setup()
+      -- Buffer	[b
+      -- Comment block	[c
+      -- Conflict marker	[x
+      -- Diagnostic	[d
+      -- File on disk	[f
+      -- Indent change	[i
+      -- Jump from jumplist inside current buffer	[j
+      -- Location from location list	[l
+      -- Old files	[o
+      -- Quickfix entry from quickfix list	[q
+      -- Tree-sitter node and parents	[t
+      -- Undo states from specially tracked linear history	[u
+      -- Window in current tab	[w
+      -- Yank selection replacing latest put region	[y
+      require("mini.bracketed").setup({
+        -- built-in [c change 와 충돌해서 수정.
+        -- 그리고 이게 mini.comment 의 gc와도 일관성 있다
+        comment = { suffix = "gc", options = {} },
+      })
 
       -- 버퍼 닫으면 윈도우도 같이 닫히면서 레이아웃이 무너지는데
       -- 빈 버퍼나, 다른 버퍼를 띄워주면서 레이아웃을 보존한다
