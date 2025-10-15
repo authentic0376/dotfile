@@ -274,7 +274,7 @@ return {
           require("mini.diff").gen_source.save(),
         },
       })
-      map("n", "<M-3>", function()
+      map("n", "<M-3>o", function()
         require("mini.diff").toggle_overlay()
       end, { desc = "[D]iff [O]verlay Toggle" })
       --

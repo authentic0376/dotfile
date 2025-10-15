@@ -9,12 +9,15 @@ return {
     opts = {
       log_view = { kind = "vsplit" },
     },
+    keys = {
+      { "<M-3>g", "<Cmd>Neogit<CR>", desc = "Neogit" },
+    },
   },
   {
     "sindrets/diffview.nvim",
     keys = {
-      { "<M-5>5", "<Cmd>DiffviewOpen<CR>", desc = "Diffview Open" },
-      { "<M-5>f", "<Cmd>DiffviewFileHistory<CR>", desc = "Diffview File History" },
+      { "<M-3>d", "<Cmd>DiffviewOpen<CR>", desc = "Diffview Open" },
+      { "<M-3>f", "<Cmd>DiffviewFileHistory<CR>", desc = "Diffview File History" },
     },
   },
 }
