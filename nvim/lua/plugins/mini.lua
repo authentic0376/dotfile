@@ -4,14 +4,13 @@ return {
     version = false,
     dependencies = { "rafamadriz/friendly-snippets" },
     config = function()
+      local map = vim.keymap.set
       ----------------------------------
       -- # mini.nvim 플러그인 설정
       ----------------------------------
-
       ----------------------------------
       -- ## text editing
       ----------------------------------
-
       ----------------------------------
       -- ### ai text-object 확장
       --
@@ -53,7 +52,6 @@ return {
       -- g[ <obj> 다음 obj의 왼쪽 경계로 가기
       -- g] <obj> 다음 obj의 오른쪽 경계로 가기
       -- obj 변형접미사: n 다음, l 이전 (vanb = 다음 bracket 객체의 around 선택)
-
       -- ## 기능
       -- 커스텀 text-obj 생성 가능
       require("mini.ai").setup({
@@ -192,7 +190,8 @@ return {
       -- x,d,jump,l,o,q,u,w,y
       require("mini.bracketed").setup()
 
-      -- 버퍼 닫으면 다음 어떤 버퍼가 보여질지 결정해준다
+      -- 버퍼 닫으면 윈도우도 같이 닫히면서 레이아웃이 무너지는데
+      -- 빈 버퍼나, 다른 버퍼를 띄워주면서 레이아웃을 보존한다
       require("mini.bufremove").setup()
 
       ----------------------------------
@@ -275,7 +274,7 @@ return {
           require("mini.diff").gen_source.save(),
         },
       })
-      vim.keymap.set("n", "<M-3>", function()
+      map("n", "<M-3>", function()
         require("mini.diff").toggle_overlay()
       end, { desc = "[D]iff [O]verlay Toggle" })
       --
@@ -317,7 +316,8 @@ return {
       -- |-------------|------|------------------------------------------------|
       -- | Trim right  |  >   | Trim right part of branch                      |
       -- |-------------|------|------------------------------------------------|
-      require("mini.files").setup()
+      local MiniFiles = require("mini.files")
+      MiniFiles.setup()
       -- Set focused directory as current working directory
       local set_cwd = function()
         local path = (MiniFiles.get_fs_entry() or {}).path
@@ -346,32 +346,22 @@ return {
         pattern = "MiniFilesBufferCreate",
         callback = function(args)
           local b = args.data.buf_id
-          vim.keymap.set("n", "g~", set_cwd, { buffer = b, desc = "Set cwd" })
-          vim.keymap.set("n", "gX", ui_open, { buffer = b, desc = "OS open" })
-          vim.keymap.set("n", "gy", yank_path, { buffer = b, desc = "Yank path" })
+          map("n", "g~", set_cwd, { buffer = b, desc = "Set cwd" })
+          map("n", "gX", ui_open, { buffer = b, desc = "OS open" })
+          map("n", "gy", yank_path, { buffer = b, desc = "Yank path" })
         end,
       })
-      vim.keymap.set("n", "<M-1>1", "<Cmd>lua MiniFiles.open()<CR>", { desc = "Open mini.files" })
-      vim.keymap.set(
-        "n",
-        "<M-1>f",
-        "<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>",
-        { desc = "mini.files focus" }
-      )
-      vim.keymap.set(
+      map("n", "<M-1>1", "<Cmd>lua MiniFiles.open()<CR>", { desc = "Open mini.files" })
+      map("n", "<M-1>f", "<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>", { desc = "mini.files focus" })
+      map(
         "n",
         "<M-1>n",
         "<Cmd>lua MiniFiles.open('~/.config/nvim/lua/plugins')<CR>",
         { desc = "mini.files nvim plugins" }
       )
-      vim.keymap.set("n", "<M-1>d", "<Cmd>lua MiniFiles.open('~/Downloads')<CR>", { desc = "mini.files ~/Downloads" })
-      vim.keymap.set("n", "<M-1>w", "<Cmd>lua MiniFiles.open('~/workspace')<CR>", { desc = "mini.files ~/workspace" })
-      vim.keymap.set(
-        "n",
-        "<M-1>s",
-        "<Cmd>lua MiniFiles.open('~/.local/state/nvim/swap')<CR>",
-        { desc = "mini.files swap/" }
-      )
+      map("n", "<M-1>d", "<Cmd>lua MiniFiles.open('~/Downloads')<CR>", { desc = "mini.files ~/Downloads" })
+      map("n", "<M-1>w", "<Cmd>lua MiniFiles.open('~/workspace')<CR>", { desc = "mini.files ~/workspace" })
+      map("n", "<M-1>s", "<Cmd>lua MiniFiles.open('~/.local/state/nvim/swap')<CR>", { desc = "mini.files swap/" })
       --
       -- ### files end
       ----------------------------------
@@ -383,12 +373,7 @@ return {
       -- 명령줄에서 :Git 으로 깃명령어 실행
       -- 명령어 결과창은 :q로 끄면 된다
       require("mini.git").setup()
-      vim.keymap.set(
-        { "n", "x" },
-        "<leader>gs",
-        "<Cmd>lua MiniGit.show_at_cursor()<CR>",
-        { desc = "Show git history at cursor" }
-      )
+      map({ "n", "x" }, "<leader>gs", "<Cmd>lua MiniGit.show_at_cursor()<CR>", { desc = "Show git history at cursor" })
       --
       -- ### git end
       ----------------------------------
@@ -410,7 +395,7 @@ return {
       -- 점프 스팟 하이라이트 반전
       vim.api.nvim_set_hl(0, "MiniJump2dSpot", { reverse = true })
       -- s + 한글자 점프
-      vim.keymap.set(
+      map(
         { "n", "o", "x" },
         "<cr>",
         "<Cmd>lua MiniJump2d.start(MiniJump2d.builtin_opts.single_character)<CR>",
@@ -426,59 +411,66 @@ return {
       -- Tab 미리보기, S-Tab 속성보기
       -- <C-x> 선택 토글, <C-a> 전체 선택 토글
       -- <C-Space> 검색결과 고정, 재검색
-      require("mini.pick").setup({
-        -- 기존에 사용하시던 mini.pick 설정들...
-        mappings = {
-          -- 기존 매핑들...
+      -- MiniPick 설정 후에 추가
+      local pick = require("mini.pick")
+      pick.setup()
+      map("n", "<M-2>f", "<Cmd>Pick files<CR>", { desc = "Pick files" })
+      map("n", "<M-2>g", "<Cmd>Pick grep<CR>", { desc = "Pick grep" })
 
-          -- 여기에 auto-session을 위한 커스텀 액션을 추가합니다.
-          -- auto-session의 기본 키인 <C-d>를 사용해 보겠습니다.
-          delete_session = {
-            char = "<C-d>",
-            func = function()
-              -- 현재 활성화된 피커의 상태를 가져옵니다.
-              local picker_state = require("mini.pick").get_picker_state()
-              if not picker_state then
-                return
-              end
+      -- Recent buffers picker 등록
+      pick.registry.buffers_recent = function(local_opts)
+        local_opts = vim.tbl_deep_extend("force", {
+          include_current = true,
+          include_unlisted = false,
+        }, local_opts or {})
 
-              -- 피커의 이름이 'AutoSession'일 때만 동작하도록 제한합니다.
-              -- (다른 mini.pick 사용 시 오작동 방지)
-              local picker_opts = require("mini.pick").get_picker_opts()
-              if not picker_opts or not picker_opts.source or picker_opts.source.name ~= "session_lens" then
-                print(string.format("picker name: %s", picker_opts.source))
-                return
-              end
+        -- 기본 buffers 함수와 동일한 로직으로 아이템 생성
+        local buffers_output = vim.api.nvim_exec("buffers" .. (local_opts.include_unlisted and "!" or ""), true)
+        local cur_buf_id, include_current = vim.api.nvim_get_current_buf(), local_opts.include_current
+        local items = {}
 
-              -- 현재 선택된 항목(세션 이름)을 가져옵니다.
-              local matches = require("mini.pick").get_picker_matches()
-              if not matches or not matches.current then
-                print("No item selected.")
-                return
-              end
-              local session_to_delete = matches.current
+        for _, l in ipairs(vim.split(buffers_output, "\n")) do
+          local buf_str, name = l:match("^%s*%d+"), l:match('"(.*)"')
+          local buf_id = tonumber(buf_str)
+          if buf_id and vim.api.nvim_buf_is_valid(buf_id) then
+            local item = {
+              text = name,
+              bufnr = buf_id,
+              -- 정렬을 위한 lastused 추가
+              _lastused = vim.fn.getbufinfo(buf_id)[1].lastused,
+            }
+            if buf_id ~= cur_buf_id or include_current then
+              table.insert(items, item)
+            end
+          end
+        end
 
-              -- `vim.ui.input`을 사용해 사용자에게 삭제 여부를 한 번 더 확인합니다.
-              vim.ui.input({ prompt = "Delete session '" .. session_to_delete .. "'? [y/N] " }, function(input)
-                if input and string.lower(input) == "y" then
-                  -- AutoSession delete 명령 실행
-                  vim.cmd("AutoSession delete " .. vim.fn.fnameescape(session_to_delete))
+        -- lastused 기준 내림차순 정렬 (최신순)
+        table.sort(items, function(a, b)
+          return a._lastused > b._lastused
+        end)
 
-                  -- 피커를 새로고침하여 삭제된 항목을 반영합니다.
-                  require("mini.pick").refresh()
+        -- 기본 buffers와 동일한 show 함수 사용 (아이콘 포함)
+        local show = pick.config.source.show
+          or function(buf_id, items_to_show, query)
+            return pick.default_show(buf_id, items_to_show, query, { show_icons = true })
+          end
 
-                  vim.notify("Session '" .. session_to_delete .. "' deleted.", vim.log.levels.INFO)
-                else
-                  vim.notify("Deletion cancelled.", vim.log.levels.WARN)
-                end
-              end)
-            end,
+        local opts = {
+          source = {
+            name = "Buffers (Recent)",
+            items = items,
+            show = show,
           },
-        },
-      })
-      vim.keymap.set("n", "<M-2>f", "<Cmd>Pick files<CR>", { desc = "Pick files" })
-      vim.keymap.set("n", "<M-2>b", "<Cmd>Pick buffers<CR>", { desc = "Pick buffers" })
-      vim.keymap.set("n", "<M-2>g", "<Cmd>Pick grep<CR>", { desc = "Pick grep" })
+        }
+
+        return pick.start(opts)
+      end
+
+      -- 키 매핑
+      map("n", "<M-2>b", function()
+        pick.registry.buffers_recent()
+      end, { desc = "Pick recent buffers" })
       --
       -- ### pick end
       ----------------------------------
@@ -502,13 +494,14 @@ return {
       require("mini.indentscope").setup()
 
       -- 사이드바 코드 요약
-      require("mini.map").setup()
-      vim.keymap.set("n", "<Leader>mc", MiniMap.close)
-      vim.keymap.set("n", "<Leader>mf", MiniMap.toggle_focus)
-      vim.keymap.set("n", "<Leader>mo", MiniMap.open)
-      vim.keymap.set("n", "<Leader>mr", MiniMap.refresh)
-      vim.keymap.set("n", "<Leader>ms", MiniMap.toggle_side)
-      vim.keymap.set("n", "<Leader>mt", MiniMap.toggle)
+      local MiniMap = require("mini.map")
+      MiniMap.setup()
+      map("n", "<Leader>mc", MiniMap.close, { desc = "mini map close" })
+      map("n", "<Leader>mf", MiniMap.toggle_focus, { desc = "mini map focus" })
+      map("n", "<Leader>mo", MiniMap.open, { desc = "mini map open" })
+      map("n", "<Leader>mr", MiniMap.refresh, { desc = "mini map refresh" })
+      map("n", "<Leader>ms", MiniMap.toggle_side, { desc = "mini map toggle side" })
+      map("n", "<Leader>mt", MiniMap.toggle, { desc = "mini map toggle" })
 
       -- 오른쪽 상단에 알림창
       require("mini.notify").setup()
