@@ -208,7 +208,9 @@ return {
 
       -- 버퍼 닫으면 윈도우도 같이 닫히면서 레이아웃이 무너지는데
       -- 빈 버퍼나, 다른 버퍼를 띄워주면서 레이아웃을 보존한다
-      require("mini.bufremove").setup()
+      local bufremove = require("mini.bufremove")
+      bufremove.setup()
+      map("n", "<leader>bd", bufremove.delete, { desc = "버퍼 지우기" })
 
       ----------------------------------
       -- ### clue 단축키 힌트 팝업

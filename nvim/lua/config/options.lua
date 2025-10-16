@@ -23,3 +23,6 @@ vim.opt.expandtab = true
 
 -- bufferline 설정 전 termguicolors 활성화는 필수입니다.
 vim.opt.termguicolors = true
+
+-- 세션 저장 옵션
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
