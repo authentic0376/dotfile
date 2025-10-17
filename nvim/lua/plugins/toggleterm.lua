@@ -24,6 +24,13 @@ return {
 					border = "curved", -- 'single', 'double' 등 가능
 				},
 			})
+			function _G.set_terminal_keymaps()
+				local opts = { buffer = 0 }
+				vim.keymap.set("t", "<M-\\>", [[<C-\><C-n>]], opts)
+			end
+
+			-- TermOpen 이벤트 발생시 키맵 설정
+			vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 		end,
 	},
 }
