@@ -37,6 +37,7 @@ return {
 				"vue_ls", -- Vue/Nuxt
 				"tailwindcss", -- Tailwind CSS
 				"eslint", -- ESLint
+				"jsonls",
 
 				-- Python
 				"pyright",
@@ -134,8 +135,9 @@ return {
 					},
 				},
 			})
+			vim.lsp.config("jsonls", {})
 
-			vim.lsp.enable({ "ts_ls", "vue_ls", "eslint", "pyright", "html", "cssls", "lua_ls" })
+			vim.lsp.enable({ "ts_ls", "vue_ls", "eslint", "pyright", "html", "cssls", "lua_ls", "jsonls" })
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -192,9 +194,11 @@ return {
 						return client.name == "eslint"
 					end)
 				then
-					return { lsp_format = "first", timeout_ms = 500 }
+					return { lsp_format = "first", timeout_ms = 1000 }
 				else
-					return { timeout_ms = 500, lsp_format = "fallback" }
+					-- eslint가 없으면, lsp format은 건너 뛰고 conform이 포멧
+					-- timeout 은 실제로 중용하다. 짧으면 실패한다
+					return { timeout_ms = 1000 }
 				end
 			end,
 		},
