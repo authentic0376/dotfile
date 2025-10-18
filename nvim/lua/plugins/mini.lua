@@ -389,6 +389,15 @@ return {
 			map("n", "<M-1>d", "<Cmd>lua MiniFiles.open('~/Downloads')<CR>", { desc = "mini.files ~/Downloads" })
 			map("n", "<M-1>w", "<Cmd>lua MiniFiles.open('~/workspace')<CR>", { desc = "mini.files ~/workspace" })
 			map("n", "<M-1>s", "<Cmd>lua MiniFiles.open('~/.local/state/nvim/swap')<CR>", { desc = "mini.files swap/" })
+			map("n", "<M-1>r", function()
+				local session_name = require("auto-session.lib").current_session_name()
+				if session_name and vim.fn.isdirectory(session_name) == 1 then
+					require("mini.files").open(session_name)
+				else
+					vim.notify("Could not determine session root path.", vim.log.levels.WARN)
+				end
+			end, { desc = "mini.files Session Root" })
+			-- 여기까지 추가
 			--
 			-- ### files end
 			----------------------------------
