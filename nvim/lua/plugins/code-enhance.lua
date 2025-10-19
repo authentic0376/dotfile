@@ -33,7 +33,7 @@ return {
 			auto_install = true,
 			ensure_installed = {
 				-- JavaScript/TypeScript
-				"ts_ls", -- TypeScript
+				"vtsls", -- vue 공식, ts,js. vue_ls 를 플러그인으로 사용
 				"vue_ls", -- Vue/Nuxt
 				"tailwindcss", -- Tailwind CSS
 				"eslint", -- ESLint
@@ -72,7 +72,7 @@ return {
 			-- =================================================================
 			vim.lsp.config("*", {
 				capabilities = capabilities,
-				root_markers = { ".git" },
+				root_markers = { ".git", "package.json", "nuxt.config.ts", "pyproject.toml", "tsconfig.json" },
 			})
 
 			vim.lsp.config("eslint", {
@@ -92,21 +92,30 @@ return {
 				},
 			})
 
-			local vue_language_server = vim.fn.expand("$MASON/packages/vue-language-server")
+			local vue_language_server_path = vim.fn.expand("$MASON/packages/vue-language-server")
 				.. "/node_modules/@vue/language-server"
 
-			vim.lsp.config("ts_ls", {
-				init_options = {
-					plugins = {
-						{
-							name = "@vue/typescript-plugin",
-							location = vue_language_server,
-							languages = { "vue" },
+			local tsserver_filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" }
+			local vue_plugin = {
+				name = "@vue/typescript-plugin",
+				location = vue_language_server_path,
+				languages = { "vue" },
+				configNamespace = "typescript",
+			}
+			local vtsls_config = {
+				settings = {
+					vtsls = {
+						tsserver = {
+							globalPlugins = {
+								vue_plugin,
+							},
 						},
 					},
 				},
-				filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-			})
+				filetypes = tsserver_filetypes,
+			}
+			vim.lsp.config("vtsls", vtsls_config)
+			vim.lsp.config("vue_ls", {})
 
 			vim.lsp.config("pyright", {})
 
@@ -137,7 +146,7 @@ return {
 			})
 			vim.lsp.config("jsonls", {})
 
-			vim.lsp.enable({ "ts_ls", "vue_ls", "eslint", "pyright", "html", "cssls", "lua_ls", "jsonls" })
+			vim.lsp.enable({ "vtsls", "vue_ls", "eslint", "pyright", "html", "cssls", "lua_ls", "jsonls" })
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -153,6 +162,9 @@ return {
 					end
 
 					map("grd", vim.diagnostic.open_float, "Line Diagnostics")
+					map("grs", function()
+						vim.lsp.buf.workspace_symbol(vim.fn.expand("<cword>"))
+					end, "Workspace Symbols (Current Word)")
 				end,
 			})
 		end,
