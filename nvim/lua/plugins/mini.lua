@@ -252,6 +252,15 @@ return {
 					-- `z` key
 					{ mode = "n", keys = "z" },
 					{ mode = "x", keys = "z" },
+
+					-- files
+					{ mode = "n", keys = "<M-1>" },
+
+					-- picker
+					{ mode = "n", keys = "<M-2>" },
+
+					-- git
+					{ mode = "n", keys = "<M-3>" },
 				},
 
 				clues = {
