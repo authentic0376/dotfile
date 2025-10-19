@@ -517,6 +517,35 @@ return {
 			map("n", "<M-2>d", "<Cmd>Pick diagnostic<CR>", { desc = "Pick diagnostic" })
 			map("n", "<M-2>v", "<Cmd>Pick visit_paths<CR>", { desc = "Pick visit paths" })
 			map("n", "<M-2>k", "<Cmd>Pick keymaps<CR>", { desc = "Pick keymaps" })
+			map("n", "<M-2>o", "<Cmd>Pick options<CR>", { desc = "Pick options" })
+			map("n", "<M-2>q", "<Cmd>Pick list scope='quickfix'<CR>", { desc = "Pick quickfix" })
+			map("n", "<M-2>j", "<Cmd>Pick list scope='jump'<CR>", { desc = "Pick jump" })
+			map("n", "<M-2>c", "<Cmd>Pick list scope='change'<CR>", { desc = "Pick change" })
+			map("n", "<M-2>m", "<Cmd>Pick marks<CR>", { desc = "Pick marks" })
+			map(
+				"n",
+				"<M-2>s",
+				"<Cmd>lua MiniExtra.pickers.lsp({ scope = 'workspace_symbol' })<CR>",
+				{ desc = "Pick workspace_symbol" }
+			)
+			map(
+				"n",
+				"<M-2>r",
+				"<Cmd>lua MiniExtra.pickers.lsp({ scope = 'references' })<CR>",
+				{ desc = "Pick references" }
+			)
+			map(
+				"n",
+				"<M-2>ld",
+				"<Cmd>lua MiniExtra.pickers.lsp({ scope = 'definition' })<CR>",
+				{ desc = "Pick definition" }
+			)
+			map(
+				"n",
+				"<M-2>lD",
+				"<Cmd>lua MiniExtra.pickers.lsp({ scope = 'declaration' })<CR>",
+				{ desc = "Pick declaration" }
+			)
 			--
 			-- ### pick end
 			----------------------------------
