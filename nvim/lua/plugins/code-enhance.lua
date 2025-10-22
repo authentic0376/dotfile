@@ -158,6 +158,7 @@ return {
 
 					-- 기타 키맵 설정
 					local map = function(keys, func, desc)
+						-- 버퍼 로컬 키맵이다. 이 버퍼에서만 작동한다
 						vim.keymap.set("n", keys, func, { buffer = ev.buf, desc = "LSP: " .. desc })
 					end
 

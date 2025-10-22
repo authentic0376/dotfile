@@ -524,22 +524,22 @@ return {
 			end, { desc = "Pick recent buffers" })
 
 			map("n", "<M-2>d", "<Cmd>Pick diagnostic<CR>", { desc = "Pick diagnostic" })
-			map("n", "<M-2>v", "<Cmd>Pick visit_paths<CR>", { desc = "Pick visit paths" })
 			map("n", "<M-2>k", "<Cmd>Pick keymaps<CR>", { desc = "Pick keymaps" })
+			map("n", "<M-2>v", "<Cmd>Pick visit_paths<CR>", { desc = "Pick visit paths" })
 			map("n", "<M-2>o", "<Cmd>Pick options<CR>", { desc = "Pick options" })
-			map("n", "<M-2>q", "<Cmd>Pick list scope='quickfix'<CR>", { desc = "Pick quickfix" })
 			map("n", "<M-2>j", "<Cmd>Pick list scope='jump'<CR>", { desc = "Pick jump" })
+			map("n", "<M-2>q", "<Cmd>Pick list scope='quickfix'<CR>", { desc = "Pick quickfix" })
 			map("n", "<M-2>c", "<Cmd>Pick list scope='change'<CR>", { desc = "Pick change" })
 			map("n", "<M-2>m", "<Cmd>Pick marks<CR>", { desc = "Pick marks" })
 			map(
 				"n",
-				"<M-2>s",
+				"<M-2>ls",
 				"<Cmd>lua MiniExtra.pickers.lsp({ scope = 'workspace_symbol' })<CR>",
 				{ desc = "Pick workspace_symbol" }
 			)
 			map(
 				"n",
-				"<M-2>r",
+				"<M-2>lr",
 				"<Cmd>lua MiniExtra.pickers.lsp({ scope = 'references' })<CR>",
 				{ desc = "Pick references" }
 			)
@@ -590,7 +590,7 @@ return {
 			-- 오른쪽 상단에 알림창
 			local MiniNotify = require("mini.notify")
 			MiniNotify.setup()
-			map("n", "<M-5>", MiniNotify.show_history, { desc = "mini notify show history" })
+			map("n", "<M-4>", MiniNotify.show_history, { desc = "mini notify show history" })
 		end,
 	},
 }
