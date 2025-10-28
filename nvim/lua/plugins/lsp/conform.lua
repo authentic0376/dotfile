@@ -18,14 +18,14 @@ return {
 			yaml = { "prettier" },
 			markdown = { "prettier" },
 			lua = { "stylua" },
-			python = { "black" },
+			python = {  "ruff" },
 		},
 		-- 저장시 자동 포맷 (LSP fallback 제거 - Conform만 사용)
- format_on_save = {
-        lsp_fallback = true,
-        async = false,
-        timeout_ms = 3000,
-      },
+		format_on_save = {
+			lsp_fallback = true,
+			async = false,
+			timeout_ms = 3000,
+		},
 	},
 	init = function()
 		-- Conform을 기본 포맷 엔진으로 설정

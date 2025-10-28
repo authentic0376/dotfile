@@ -9,7 +9,14 @@ local capabilities = require("mini.completion").get_lsp_capabilities()
 -- =================================================================
 vim.lsp.config("*", {
 	capabilities = capabilities,
-	root_markers = { ".git", "package.json", "nuxt.config.ts", "pyproject.toml", "tsconfig.json" },
+	root_markers = {
+		".git",
+		"package.json",
+		"nuxt.config.ts",
+		"pyproject.toml",
+		"tsconfig.json",
+		"lazy-lock.json",
+	},
 })
 
 -- lsp 서버가 버퍼에 적용되는 순간

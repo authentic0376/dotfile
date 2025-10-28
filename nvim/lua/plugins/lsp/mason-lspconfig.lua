@@ -20,7 +20,10 @@ return {
 			"jsonls",
 
 			-- Python
-			"pyright",
+			-- "pylsp",
+			-- "pyright",
+			"basedpyright",
+			"ruff",
 
 			-- Web
 			"html",

@@ -590,7 +590,7 @@ return {
 			-- 오른쪽 상단에 알림창
 			local MiniNotify = require("mini.notify")
 			MiniNotify.setup()
-			map("n", "<M-4>", MiniNotify.show_history, { desc = "mini notify show history" })
+			map("n", "<M-5>", MiniNotify.show_history, { desc = "mini notify show history" })
 		end,
 	},
 }
