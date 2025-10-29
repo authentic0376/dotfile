@@ -39,5 +39,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("grs", function()
 			vim.lsp.buf.workspace_symbol(vim.fn.expand("<cword>"))
 		end, "Workspace Symbols (Current Word)")
+		map("grk", "<Cmd>LspRestart<CR>", "Lsp Restart")
 	end,
 })

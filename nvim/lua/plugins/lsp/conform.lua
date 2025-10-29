@@ -18,12 +18,12 @@ return {
 			yaml = { "prettier" },
 			markdown = { "prettier" },
 			lua = { "stylua" },
-			python = {  "ruff" },
+			python = { "ruff_format" },
 		},
+
 		-- 저장시 자동 포맷 (LSP fallback 제거 - Conform만 사용)
 		format_on_save = {
-			lsp_fallback = true,
-			async = false,
+			lsp_fallback = false,
 			timeout_ms = 3000,
 		},
 	},

@@ -1,0 +1,5 @@
+# 이 설정이 있어야 poetry install 만 해도 .venv가 생성된다
+# poetry config virtualenvs.in-project true --local
+# 를 입력해서 생성 가능
+[virtualenvs]
+in-project = true

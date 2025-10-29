@@ -1,0 +1,35 @@
+[project]
+name = "project-name"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "sprain",email = "sprain6628@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+dependencies = []
+
+[tool.poetry]
+packages = [{include = "package-name", from = "src"}]
+
+[tool.poetry.scripts]
+start = "package-name.module-name:funcion-name"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+# 위 설정은 peotry new {project-name} 만 실행하면 자동 생성된다
+# 다만 scripts 부분은 직접 작성해야 한다
+
+# basedpyright가 src 레이아웃을 인식하게 한다
+# src를 경로에 포함하여 경로에서 맨앞에 src를
+# 생략할 수 있게 된다
+# poetry 에서 패키징할때 src 밑에 패키지만 넣기 때문에
+# 나중에 코드에 import src.package-name. 이런식으로 있으면
+# module not found error 가 날 수 있다
+[tool.basedpyright]
+include = ["src"] 
+
+[tool.ruff]
+src = ["src"]
