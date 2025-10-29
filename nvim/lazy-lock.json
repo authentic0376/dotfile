@@ -20,7 +20,7 @@
   "neogit": { "branch": "master", "commit": "c6d00913f802acedfb93c01267e89185f25800ca" },
   "nvim-early-retirement": { "branch": "main", "commit": "9109589b542773c9ad2a34067a085874f255577b" },
   "nvim-lsp-file-operations": { "branch": "master", "commit": "9744b738183a5adca0f916527922078a965515ed" },
-  "nvim-lspconfig": { "branch": "master", "commit": "513fc3e2d1a041f2cf0a6379de2670ec586f4469" },
+  "nvim-lspconfig": { "branch": "master", "commit": "cbd1e91296189a765094810de1b71a04e2597579" },
   "nvim-treesitter": { "branch": "master", "commit": "42fc28ba918343ebfd5565147a42a26580579482" },
   "nvim-treesitter-context": { "branch": "master", "commit": "ec308c7827b5f8cb2dd0ad303a059c945dd21969" },
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "a9742cbc1f95db9eaf3293bf8cd0622ca36542bb" },
