@@ -4,6 +4,18 @@
 -- 이 한 줄로 mini.completion이 필요한 모든 capability를 설정합니다.
 local capabilities = require("mini.completion").get_lsp_capabilities()
 
+-- basedpyright은utf-16만 지원하는데 ruff 랑 encoding이 달라서
+-- 둘다 utf-16 으로 통일 이건 위치인코딩이고, 보통 말하는 건
+-- 파일인코딩이다 서로 상관 없다
+--
+-- capabilities.general.positionEncodings = 이런식으로 하면
+-- general 필드가 없을 경우 에러가 나므로 tbl_deep_extend을 쓴다
+capabilities = vim.tbl_deep_extend("force", capabilities, {
+	general = {
+		positionEncodings = { "utf-16" },
+	},
+})
+
 -- =================================================================
 -- 2. 공통 설정 (모든 서버에 적용)
 -- =================================================================
