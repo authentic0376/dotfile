@@ -19,6 +19,7 @@ return {
 			markdown = { "prettier" },
 			lua = { "stylua" },
 			python = { "ruff_format" },
+			toml = { "taplo" },
 		},
 
 		-- 저장시 자동 포맷 (LSP fallback 제거 - Conform만 사용)

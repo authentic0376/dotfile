@@ -6,6 +6,7 @@ return {
 			-- Formatters
 			"prettier",
 			"stylua",
+			"taplo",
 		},
 		-- ["pylsp"] = {
 		-- 	-- pylsp가 설치될 때 venv 안에 자동으로 'rope'와 'pylsp-ruff'를 설치합니다.
