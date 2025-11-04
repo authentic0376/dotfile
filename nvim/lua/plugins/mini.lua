@@ -119,16 +119,44 @@ return {
 			--
 			-- <C-l> <C-h> 점프 포인트 이동
 			-- <C-c> 스니펫 중단
-			local gen_loader = require("mini.snippets").gen_loader
-			require("mini.snippets").setup({
+
+			local miniSnippet = require("mini.snippets")
+			local gen_loader = miniSnippet.gen_loader
+			miniSnippet.setup({
 				-- 스니펫 로더 설정
 				snippets = {
-					-- 'runtimepath'에서 현재 언어에 맞는 스니펫 파일을 로드합니다.
-					-- friendly-snippets가 이 경로에 파일을 설치하므로 자동으로 인식됩니다.
-					-- friendly-snippets 은 상단에 mini.nvim 디펜던시에 있다
-					gen_loader.from_lang(),
+					-- 'runtimepath' 아래의 'snippets/' 아래를 탐색한다
+					-- friendly-snippets를 설치하면, 이것의 설치 경로가
+					-- 'runtimepath'에 추가된다.
+					--
+					-- mini.snippet이 커서 위치에서 감지하는 언어가 lang이다
+					--
+					-- 'runtimepath'에서
+					-- lang/**/*.json, **/lang.json
+					-- 를 찾는다.
+					-- 이것이 default lang_patterns이다
+					--
+					-- lang 체크는 `grl`에 맵핑해 놓았다.
+					gen_loader.from_lang({
+						-- lang_patterns 는 default와 병합이 아니라 교체 된다
+						lang_patterns = {
+							vue = {
+								"frameworks/vue/vue.json",
+								"frameworks/vue/html.json",
+								"frameworks/vue/nuxt-html.json",
+							},
+							typescript = {
+								"javascript/typescript.json",
+								"javascript/javascript.json",
+								"javascript/tsdoc.json",
+								"frameworks/vue/script.json",
+								"frameworks/vue/nuxt-script.json",
+							},
+						},
+					}),
 				},
 			})
+			miniSnippet.start_lsp_server()
 			--
 			-- ### snippets end
 			----------------------------------
