@@ -156,6 +156,12 @@ return {
 					}),
 				},
 			})
+			-- NOTE: :LspRestart 시 mini.snippets 가 없다든가 config이 없다고
+			-- 오류가 뜬다.
+			-- LspRestart는 nvim 내장 함수가 아니라 mason-lspconfig 이다.
+			-- mini.snippets의 LSP 서버는 Mason관리가 아니고, mini.snippets
+			-- 자체의 LSP 서버이기 때문에 찾을 수 없어서 오류가 나는 것이다
+			-- 오류가 나도 그냥 무시하자
 			miniSnippet.start_lsp_server()
 			--
 			-- ### snippets end
@@ -583,6 +589,9 @@ return {
 				"<Cmd>lua MiniExtra.pickers.lsp({ scope = 'declaration' })<CR>",
 				{ desc = "Pick declaration" }
 			)
+
+			map("n", "<M-2>t", "<Cmd>lua MiniExtra.pickers.colorschemes()<CR>", { desc = "Pick colorschemes" })
+
 			--
 			-- ### pick end
 			----------------------------------

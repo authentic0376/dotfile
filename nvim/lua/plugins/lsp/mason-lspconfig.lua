@@ -1,4 +1,4 @@
--- Mason-NSPConfig: Mason과 LSP 연결
+-- Mason-LSPConfig: Mason과 LSP 연결
 -- vim.lsp.enable 도 해준다
 return {
 	"mason-org/mason-lspconfig.nvim",
