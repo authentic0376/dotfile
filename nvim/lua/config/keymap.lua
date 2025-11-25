@@ -10,7 +10,7 @@ vim.keymap.set("n", "<M-/>", "<Cmd>nohlsearch | redraw!<CR>", {
 vim.keymap.set({ "n", "x" }, "<leader>p", '"0p', { desc = "Pasted keeping register" })
 
 -- 찾아 바꾸기, *N 으로 검색 상태가 되고 해야한다
-vim.keymap.set("n", "<Leader>r", ":%s///gc<Left><Left><Left>", { desc = "Global Substitute" })
+vim.keymap.set("n", "<Leader>r", ":%s///gc<Left><Left><Left>", { desc = "찾아 바꾸기" })
 
 -- 커서 위치에서 lang(snippet 불러오는 기준) 체크
 vim.keymap.set("n", "grl", function()

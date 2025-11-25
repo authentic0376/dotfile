@@ -24,6 +24,7 @@ return {
 			-- "pyright",
 			"basedpyright",
 			"ruff",
+			-- "pyrefly",
 
 			-- Web
 			"html",

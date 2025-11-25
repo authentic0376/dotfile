@@ -84,6 +84,20 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			-- 버퍼 로컬 키맵이다. 이 버퍼에서만 작동한다
 			vim.keymap.set("n", keys, func, { buffer = ev.buf, desc = "LSP: " .. desc })
 		end
+		-- 'K, gd, gD, grt 등등'는 기본으로 되지만 어쩌다 꼬이면
+		-- 키맵이 풀려버리기 때문에 명시적으로 지정해야 한다
+		--
+		-- 그리고, gd, gD 등은 지정 안하면, lsp 기능이 아니라
+		-- nvim 기본 기능으로, 단순히 문서 가장 처음 나오는 글자를 찾는다
+		-- lsp로 실행해야 진정한 definition을 찾아간다
+		map("K", vim.lsp.buf.hover, "Hover Documentation")
+		map("gd", vim.lsp.buf.definition, "Goto Definition")
+		map("gD", vim.lsp.buf.declaration, "Goto Declaration")
+		map("grr", vim.lsp.buf.references, "Goto References")
+		map("gri", vim.lsp.buf.implementation, "Goto Implementation")
+		map("grt", vim.lsp.buf.type_definition, "Goto Type definition")
+		map("grn", vim.lsp.buf.rename, "Rename Symbol")
+		map("gra", vim.lsp.buf.code_action, "Code Action")
 
 		map("grd", vim.diagnostic.open_float, "Line Diagnostics")
 		map("grs", function()
